@@ -1,1 +1,115 @@
-<!DOCTYPE html><html lang="zh-Hant"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>NTUT Career Platform</title><link rel="stylesheet" href="css/reset.css"><link rel="stylesheet" href="css/variables.css"><link rel="stylesheet" href="css/layout.css"><link rel="stylesheet" href="css/components.css"><link rel="stylesheet" href="css/pages.css"></head><body><header class="site-header"><div class="container header-inner"><a class="brand" href="index.html"><span class="brand-mark">NTUT</span><span class="brand-text"><strong>Career Platform</strong><small>實習與就業職缺平台</small></span></a></div></header><main><section class="hero"><div class="container"><p class="eyebrow">NATIONAL TAIPEI UNIVERSITY OF TECHNOLOGY</p><h1>探索適合你的實習與就業機會</h1><p class="hero-copy">集中瀏覽企業職缺、需求科系與系所認證資訊，並直接前往企業官網或招募平台投遞。</p></div></section><section class="container main-section"><div class="filter-panel"><div class="search-field"><label for="keyword">搜尋職缺</label><input id="keyword" type="search" placeholder="輸入職缺、企業或地點"></div><div class="filter-grid"><div class="field"><label for="jobType">職缺類型</label><select id="jobType"><option value="">全部</option><option value="SUMMER">暑期實習</option><option value="SEMESTER">學期實習</option><option value="FULL_TIME">正職</option></select></div><div class="field"><label for="department">需求科系</label><select id="department"><option value="">全部科系</option></select></div><div class="field"><label for="industry">產業類別</label><select id="industry"><option value="">全部產業</option></select></div><div class="field"><label for="sort">排序</label><select id="sort"><option value="latest">最新刊登</option><option value="deadline">即將截止</option><option value="company">企業名稱</option></select></div></div></div><div class="result-toolbar"><p id="resultCount">正在載入職缺…</p><button id="clearFilters" class="button button-secondary">清除篩選</button></div><div id="statusArea"></div><div id="jobGrid" class="job-grid"></div></section></main><footer class="site-footer"><div class="container footer-inner"><p>NTUT Career Platform</p><p>國立臺北科技大學</p></div></footer><script src="js/config.js"></script><script src="js/utils.js"></script><script src="js/api.js"></script><script src="js/ui.js"></script><script src="js/filters.js"></script><script src="js/jobs.js"></script></body></html>
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="北科大實習與就業職缺平台">
+  <title>NTUT Career Platform</title>
+  <link rel="stylesheet" href="css/reset.css">
+  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/layout.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/pages.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="brand" href="index.html">
+        <span class="brand-mark">NTUT</span>
+        <span class="brand-text">
+          <strong>Career Platform</strong>
+          <small>實習與就業職缺平台</small>
+        </span>
+      </a>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="container hero-grid">
+        <div>
+          <p class="eyebrow">NATIONAL TAIPEI UNIVERSITY OF TECHNOLOGY</p>
+          <h1>探索適合你的實習與就業機會</h1>
+          <p class="hero-copy">
+            集中瀏覽企業職缺、需求科系與系所認證資訊，並直接前往企業官網或招募平台投遞。
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section class="container statistics-section" aria-label="平台統計">
+      <div id="statisticsGrid" class="statistics-grid">
+        <div class="stat-card skeleton-stat"></div>
+        <div class="stat-card skeleton-stat"></div>
+        <div class="stat-card skeleton-stat"></div>
+      </div>
+    </section>
+
+    <section class="container main-section">
+      <div class="filter-panel">
+        <div class="search-field">
+          <label for="keyword">搜尋職缺</label>
+          <input id="keyword" type="search" placeholder="輸入職缺、企業或地點">
+        </div>
+
+        <div class="filter-grid">
+          <div class="field">
+            <label for="jobType">職缺類型</label>
+            <select id="jobType">
+              <option value="">全部</option>
+              <option value="SUMMER">暑期實習</option>
+              <option value="SEMESTER">學期實習</option>
+              <option value="FULL_TIME">正職</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label for="department">需求科系</label>
+            <select id="department">
+              <option value="">全部科系</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label for="industry">產業類別</label>
+            <select id="industry">
+              <option value="">全部產業</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label for="sort">排序</label>
+            <select id="sort">
+              <option value="latest">最新刊登</option>
+              <option value="deadline">即將截止</option>
+              <option value="company">企業名稱</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <div class="result-toolbar">
+        <p id="resultCount">正在載入職缺…</p>
+        <button id="clearFilters" class="button button-secondary" type="button">清除篩選</button>
+      </div>
+
+      <div id="statusArea" aria-live="polite"></div>
+      <div id="jobGrid" class="job-grid" aria-live="polite"></div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <p>NTUT Career Platform</p>
+      <p>國立臺北科技大學</p>
+    </div>
+  </footer>
+
+  <script src="js/config.js"></script>
+  <script src="js/utils.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/ui.js"></script>
+  <script src="js/filters.js"></script>
+  <script src="js/jobs.js"></script>
+</body>
+</html>
