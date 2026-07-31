@@ -1,0 +1,1 @@
+window.APP_CONFIG=Object.freeze({API_BASE_URL:"https://script.google.com/macros/s/AKfycbzOqnAfLMuF9XN7uqTE9i7CXyVPSEIVk1OM6OX4ewaT2YpukH05IY34AwnRvWTiWr1f/exec",CACHE_KEY:"ntutCareerJobs",FILTER_CACHE_KEY:"ntutCareerFilters",STAT_CACHE_KEY:"ntutCareerStats",CACHE_MINUTES:10});
