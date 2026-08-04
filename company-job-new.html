@@ -1,1 +1,242 @@
-<!DOCTYPE html><html lang="zh-Hant"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>新增職缺｜NTUT Career Platform</title><link rel="stylesheet" href="css/reset.css"><link rel="stylesheet" href="css/variables.css"><link rel="stylesheet" href="css/layout.css"><link rel="stylesheet" href="css/components.css"><link rel="stylesheet" href="css/pages.css"><link rel="stylesheet" href="css/enterprise-portal.css"></head><body><div class="portal-layout"><aside class="portal-sidebar"><div class="portal-company"><small>企業端</small><strong data-company-name>企業帳號</strong></div><nav class="portal-nav"><a href="company-dashboard.html">總覽</a><a href="company-profile.html">公司資料</a><a href="company-jobs.html">職缺管理</a><a href="company-job-new.html">新增職缺</a></nav></aside><main class="portal-main"><div class="portal-topbar"><div><p class="eyebrow">企業後台</p><h1>新增職缺</h1><p class="portal-muted">送出後由平台行政審核，通過後公開。</p></div><button id="logoutButton" class="button button-secondary">登出</button></div><section class="portal-panel"><form id="jobForm" class="portal-form"><div class="form-grid"><div class="field"><label>職缺類型 *</label><select name="jobType" id="jobType" required><option value="">請選擇</option><option value="INTERNSHIP">實習</option><option value="FULL_TIME">正職</option></select></div><div class="field"><label>職缺名稱 *</label><input name="jobTitle" required></div><div class="field form-wide"><label>工作地點 *</label><input name="workLocation" required></div><div class="field form-wide"><label>工作內容 *</label><textarea name="jobDescription" rows="6" required></textarea></div><div class="field form-wide"><label>需求條件 *</label><textarea name="requirements" rows="5" required></textarea></div><div class="field"><label>需求人數</label><input name="headcount" type="number" min="1"></div><div class="field"><label>薪資類型 *</label><select name="salaryType" id="salaryType" required><option value="">請選擇</option><option value="HOURLY">時薪</option><option value="MONTHLY">月薪</option><option value="SALARY_RANGE">月薪區間</option><option value="UNPAID">無薪</option></select></div><div class="field"><label>最低薪資 *</label><input name="salaryMin" type="number" min="0"></div><div class="field"><label>最高薪資</label><input name="salaryMax" type="number" min="0"></div><div class="field form-wide"><label>投遞連結 *</label><input name="applicationUrl" type="url" placeholder="https://" required></div><div class="field"><label>投遞截止日 *</label><input name="applicationDeadline" type="date" required></div><div class="field"><label>聯絡人</label><input name="contactName"></div><div class="field"><label>聯絡 Email</label><input name="contactEmail" type="email"></div></div><div id="internshipFields" hidden><h2>實習資料</h2><div class="form-grid"><div class="field"><label>實習類型 *</label><select name="internshipType"><option value="">請選擇</option><option value="SUMMER">暑期實習</option><option value="SEMESTER">學期實習</option></select></div><div class="field"><label>有薪實習</label><select name="isPaid"><option value="true">有薪</option><option value="false">無薪</option></select></div><div class="field"><label>開始日期 *</label><input name="internshipStartDate" type="date"></div><div class="field"><label>結束日期 *</label><input name="internshipEndDate" type="date"></div><div class="field"><label>預計總時數 *</label><input name="estimatedTotalHours" type="number" min="0"></div><div class="field form-wide"><label>保險說明 *</label><input name="insuranceDescription"></div><div class="field form-wide"><label>無薪原因</label><textarea name="unpaidReason" rows="3"></textarea></div></div></div><div><h2>需求科系</h2><div id="departmentOptions" class="checkbox-grid"></div></div><div id="formMessage" class="form-message" hidden></div><button class="button button-primary">送出審核</button></form></section></main></div><script src="js/config.js"></script><script src="js/api.js"></script><script src="js/company-api.js"></script><script src="js/portal-common.js"></script><script src="js/company-job-new.js"></script></body></html>
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>新增職缺｜NTUT Career Platform</title>
+
+  <link rel="stylesheet" href="css/reset.css">
+  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/layout.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/pages.css">
+  <link rel="stylesheet" href="css/enterprise-portal.css">
+</head>
+
+<body>
+  <div class="portal-layout">
+    <aside class="portal-sidebar">
+      <div class="portal-company">
+        <small>企業端</small>
+        <strong data-company-name>企業帳號</strong>
+      </div>
+
+      <nav class="portal-nav">
+        <a href="company-dashboard.html">總覽</a>
+        <a href="company-profile.html">公司資料</a>
+        <a href="company-jobs.html">職缺管理</a>
+        <a class="active" href="company-job-new.html">新增職缺</a>
+      </nav>
+    </aside>
+
+    <main class="portal-main">
+      <div class="portal-topbar">
+        <div>
+          <p class="eyebrow">企業後台</p>
+          <h1>新增職缺</h1>
+          <p class="portal-muted">送出後由平台行政審核，通過後公開。</p>
+        </div>
+
+        <button
+          id="logoutButton"
+          class="button button-secondary"
+          type="button"
+        >
+          登出
+        </button>
+      </div>
+
+      <section class="portal-panel">
+        <form id="jobForm" class="portal-form">
+          <div class="form-grid">
+            <div class="field">
+              <label for="jobType">職缺類型 *</label>
+              <select name="jobType" id="jobType" required>
+                <option value="">請選擇</option>
+                <option value="INTERNSHIP">實習</option>
+                <option value="FULL_TIME">正職</option>
+              </select>
+            </div>
+
+            <div class="field">
+              <label for="jobTitle">職缺名稱 *</label>
+              <input id="jobTitle" name="jobTitle" required>
+            </div>
+
+            <div class="field form-wide">
+              <label for="workLocation">工作地點 *</label>
+              <input id="workLocation" name="workLocation" required>
+            </div>
+
+            <div class="field form-wide">
+              <label for="jobDescription">工作內容 *</label>
+              <textarea
+                id="jobDescription"
+                name="jobDescription"
+                rows="6"
+                required
+              ></textarea>
+            </div>
+
+            <div class="field form-wide">
+              <label for="requirements">需求條件 *</label>
+              <textarea
+                id="requirements"
+                name="requirements"
+                rows="5"
+                required
+              ></textarea>
+            </div>
+
+            <div class="field">
+              <label for="headcount">需求人數</label>
+              <input id="headcount" name="headcount" type="number" min="1">
+            </div>
+
+            <div class="field">
+              <label for="salaryType">薪資類型 *</label>
+              <select name="salaryType" id="salaryType" required>
+                <option value="">請選擇</option>
+                <option value="HOURLY">時薪</option>
+                <option value="MONTHLY">月薪</option>
+                <option value="SALARY_RANGE">月薪區間</option>
+                <option value="UNPAID">無薪</option>
+              </select>
+            </div>
+
+            <div class="field">
+              <label for="salaryMin">最低薪資 *</label>
+              <input id="salaryMin" name="salaryMin" type="number" min="0">
+            </div>
+
+            <div class="field">
+              <label for="salaryMax">最高薪資</label>
+              <input id="salaryMax" name="salaryMax" type="number" min="0">
+            </div>
+
+            <div class="field form-wide">
+              <label for="applicationUrl">投遞連結 *</label>
+              <input
+                id="applicationUrl"
+                name="applicationUrl"
+                type="url"
+                placeholder="https://"
+                required
+              >
+            </div>
+
+            <div class="field">
+              <label for="applicationDeadline">投遞截止日 *</label>
+              <input
+                id="applicationDeadline"
+                name="applicationDeadline"
+                type="date"
+                required
+              >
+            </div>
+
+            <div class="field">
+              <label for="contactName">聯絡人</label>
+              <input id="contactName" name="contactName">
+            </div>
+
+            <div class="field">
+              <label for="contactEmail">聯絡 Email</label>
+              <input id="contactEmail" name="contactEmail" type="email">
+            </div>
+          </div>
+
+          <div id="internshipFields" hidden>
+            <h2>實習資料</h2>
+
+            <div class="form-grid">
+              <div class="field">
+                <label for="internshipType">實習類型 *</label>
+                <select name="internshipType" id="internshipType">
+                  <option value="">請選擇</option>
+                  <option value="SUMMER">暑期實習</option>
+                  <option value="SEMESTER">學期實習</option>
+                </select>
+              </div>
+
+              <div class="field">
+                <label for="isPaid">有薪實習</label>
+                <select name="isPaid" id="isPaid">
+                  <option value="true">有薪</option>
+                  <option value="false">無薪</option>
+                </select>
+              </div>
+
+              <div class="field">
+                <label for="internshipStartDate">開始日期 *</label>
+                <input
+                  id="internshipStartDate"
+                  name="internshipStartDate"
+                  type="date"
+                >
+              </div>
+
+              <div class="field">
+                <label for="internshipEndDate">結束日期 *</label>
+                <input
+                  id="internshipEndDate"
+                  name="internshipEndDate"
+                  type="date"
+                >
+              </div>
+
+              <div class="field">
+                <label for="estimatedTotalHours">預計總時數 *</label>
+                <input
+                  id="estimatedTotalHours"
+                  name="estimatedTotalHours"
+                  type="number"
+                  min="0"
+                >
+              </div>
+
+              <div class="field form-wide">
+                <label for="insuranceDescription">保險說明 *</label>
+                <input
+                  id="insuranceDescription"
+                  name="insuranceDescription"
+                >
+              </div>
+
+              <div class="field form-wide">
+                <label for="unpaidReason">無薪原因</label>
+                <textarea
+                  id="unpaidReason"
+                  name="unpaidReason"
+                  rows="3"
+                ></textarea>
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <h2>需求科系</h2>
+            <div id="departmentOptions" class="checkbox-grid"></div>
+          </div>
+
+          <div id="formMessage" class="form-message" hidden></div>
+
+          <button
+            id="jobSubmitButton"
+            class="button button-primary"
+            type="submit"
+          >
+            送出審核
+          </button>
+        </form>
+      </section>
+    </main>
+  </div>
+
+  <script src="js/config.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/company-api.js"></script>
+  <script src="js/portal-common.js"></script>
+  <script src="js/company-job-new.js"></script>
+</body>
+</html>
