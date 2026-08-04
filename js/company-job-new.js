@@ -1,1 +1,16 @@
-document.addEventListener("DOMContentLoaded",async function(){PortalCommon.bindLogout();const f=document.querySelector("#jobForm"),type=document.querySelector("#jobType"),intern=document.querySelector("#internshipFields"),options=document.querySelector("#departmentOptions"),m=document.querySelector("#formMessage");try{const session=await PortalCommon.requireSession();PortalCommon.setCompanyName(session.company.companyShortName||session.company.companyName);const departments = await CompanyApi.departments();options.innerHTML = departments.map(d=>`<label class="checkbox-item"><input type="checkbox" name="departmentIds" value="${d.departmentId}"><span>${d.departmentName}</span></label>`).join("")}catch(err){m.textContent=err.message;m.className="form-message error";m.hidden=false}type.addEventListener("change",()=>{intern.hidden=type.value!=="INTERNSHIP"});f.addEventListener("submit",async function(e){e.preventDefault();const data=Object.fromEntries(new FormData(f).entries());data.departmentIds=[...f.querySelectorAll('input[name="departmentIds"]:checked')].map(x=>x.value);if(type.value!=="INTERNSHIP"){["internshipType","internshipStartDate","internshipEndDate","estimatedTotalHours","isPaid","insuranceDescription","unpaidReason"].forEach(k=>data[k]="")}try{const result=await CompanyApi.createJob(data);m.textContent=`職缺 ${result.jobId} 已送出審核`;m.className="form-message success";m.hidden=false;f.reset();intern.hidden=true;setTimeout(()=>location.href="company-jobs.html",1800)}catch(err){let text=err.message;if(Array.isArray(err.details))text+="：" + err.details.map(x=>x.code).join("、");m.textContent=text;m.className="form-message error";m.hidden=false}})});
+const departments = await CompanyApi.departments();
+
+options.innerHTML = departments
+  .map(function (department) {
+    return `
+      <label class="checkbox-item">
+        <input
+          type="checkbox"
+          name="departmentIds"
+          value="${department.departmentId}"
+        >
+        <span>${department.departmentName}</span>
+      </label>
+    `;
+  })
+  .join("");
