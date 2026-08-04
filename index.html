@@ -5,22 +5,32 @@
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <meta name="description" content="北科大實習與就業職缺平台">
   <title>NTUT Career Platform</title>
+
   <link rel="stylesheet" href="css/reset.css">
   <link rel="stylesheet" href="css/variables.css">
   <link rel="stylesheet" href="css/layout.css">
   <link rel="stylesheet" href="css/components.css">
   <link rel="stylesheet" href="css/pages.css">
+  <link rel="stylesheet" href="css/enterprise-portal.css">
 </head>
+
 <body>
   <header class="site-header">
     <div class="container header-inner">
       <a class="brand" href="index.html">
         <span class="brand-mark">NTUT</span>
+
         <span class="brand-text">
           <strong>Career Platform</strong>
           <small>實習與就業職缺平台</small>
         </span>
       </a>
+
+      <nav class="main-nav" aria-label="主要導覽">
+        <a href="index.html">學生找職缺</a>
+        <a href="company-register.html">企業刊登職缺</a>
+        <a class="nav-login" href="company-login.html">企業登入</a>
+      </nav>
     </div>
   </header>
 
@@ -28,8 +38,12 @@
     <section class="hero">
       <div class="container hero-grid">
         <div>
-          <p class="eyebrow">NATIONAL TAIPEI UNIVERSITY OF TECHNOLOGY</p>
+          <p class="eyebrow">
+            NATIONAL TAIPEI UNIVERSITY OF TECHNOLOGY
+          </p>
+
           <h1>探索適合你的實習與就業機會</h1>
+
           <p class="hero-copy">
             集中瀏覽企業職缺、需求科系與系所認證資訊，並直接前往企業官網或招募平台投遞。
           </p>
@@ -49,7 +63,11 @@
       <div class="filter-panel">
         <div class="search-field">
           <label for="keyword">搜尋職缺</label>
-          <input id="keyword" type="search" placeholder="輸入職缺、企業或地點">
+          <input
+            id="keyword"
+            type="search"
+            placeholder="輸入職缺、企業或地點"
+          >
         </div>
 
         <div class="filter-grid">
@@ -90,7 +108,14 @@
 
       <div class="result-toolbar">
         <p id="resultCount">正在載入職缺…</p>
-        <button id="clearFilters" class="button button-secondary" type="button">清除篩選</button>
+
+        <button
+          id="clearFilters"
+          class="button button-secondary"
+          type="button"
+        >
+          清除篩選
+        </button>
       </div>
 
       <div id="statusArea" aria-live="polite"></div>
