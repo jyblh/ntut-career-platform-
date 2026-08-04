@@ -13,3 +13,9 @@ jobs(){return this.post("company.getJobs",{token:this.token()})},
 createJob(data){return this.post("company.createJob",{token:this.token(),data})},
 async logout(){const token=this.token();localStorage.removeItem(this.TOKEN_KEY);try{await this.post("company.logout",{token})}catch(e){console.warn(e)}}
 });
+
+departments() {
+  return this.post("company.getDepartments", {
+    token: this.token()
+  });
+},
