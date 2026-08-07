@@ -1,153 +1,20 @@
-window.CompanyApi = Object.freeze({
-  TOKEN_KEY: "ntutCompanySession",
-
-  async post(action, data = {}) {
-    const response = await fetch(
-      "https://script.google.com/macros/s/AKfycbzOqnAfLMuF9XN7uqTE9i7CXyVPSEIVk1OM6OX4ewaT2YpukH05IY34AwnRvWTiWr1f/exec",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "text/plain;charset=utf-8"
-        },
-        body: JSON.stringify(
-          Object.assign(
-            { action: action },
-            data
-          )
-        )
-      }
-    );
-
-    const payload = await response.json();
-
-    if (!payload.success) {
-      const error = new Error(
-        payload?.error?.message || "系統處理失敗"
-      );
-
-      error.code = payload?.error?.code;
-      error.details = payload?.error?.details;
-
-      throw error;
-    }
-
-    return payload.data;
-  },
-
-  sendCode(email) {
-    return this.post(
-      "company.sendVerificationCode",
-      { email: email }
-    );
-  },
-
-  register(data) {
-    return this.post(
-      "company.register",
-      { data: data }
-    );
-  },
-
-  async login(email, password) {
-    const data = await this.post(
-      "company.login",
-      {
-        email: email,
-        password: password
-      }
-    );
-
-    localStorage.setItem(
-      this.TOKEN_KEY,
-      data.token
-    );
-
-    return data;
-  },
-
-  token() {
-    return localStorage.getItem(this.TOKEN_KEY) || "";
-  },
-
-  session() {
-    return this.post(
-      "company.getSession",
-      {
-        token: this.token()
-      }
-    );
-  },
-
-  dashboard() {
-    return this.post(
-      "company.getDashboard",
-      {
-        token: this.token()
-      }
-    );
-  },
-
-  profile() {
-    return this.post(
-      "company.getProfile",
-      {
-        token: this.token()
-      }
-    );
-  },
-
-  updateProfile(data) {
-    return this.post(
-      "company.updateProfile",
-      {
-        token: this.token(),
-        data: data
-      }
-    );
-  },
-
-  jobs() {
-    return this.post(
-      "company.getJobs",
-      {
-        token: this.token()
-      }
-    );
-  },
-
-  createJob(data) {
-    return this.post(
-      "company.createJob",
-      {
-        token: this.token(),
-        data: data
-      }
-    );
-  },
-
-  departments() {
-    return this.post(
-      "company.getDepartments",
-      {
-        token: this.token()
-      }
-    );
-  },
-
-  async logout() {
-    const token = this.token();
-
-    localStorage.removeItem(this.TOKEN_KEY);
-
-    try {
-      await this.post(
-        "company.logout",
-        {
-          token: token
-        }
-      );
-    } catch (error) {
-      console.warn(error);
-    }
-  }
+window.CompanyApi=Object.freeze({
+TOKEN_KEY:"ntutCompanySession",
+DEPARTMENT_CACHE_KEY:"ntutCompanyDepartments",
+DEPARTMENT_CACHE_MINUTES:1440,
+async post(action,data={}){const r=await fetch("https://script.google.com/macros/s/AKfycbzOqnAfLMuF9XN7uqTE9i7CXyVPSEIVk1OM6OX4ewaT2YpukH05IY34AwnRvWTiWr1f/exec",{method:"POST",headers:{"Content-Type":"text/plain;charset=utf-8"},body:JSON.stringify(Object.assign({action},data))});if(!r.ok)throw new Error("API 請求失敗："+r.status);const p=await r.json();if(!p.success){const e=new Error(p?.error?.message||"系統處理失敗");e.code=p?.error?.code||"UNKNOWN_ERROR";e.details=p?.error?.details||null;throw e}return p.data},
+sendCode(email){return this.post("company.sendVerificationCode",{email})},
+register(data){return this.post("company.register",{data})},
+async login(email,password){const d=await this.post("company.login",{email,password});localStorage.setItem(this.TOKEN_KEY,d.token);return d},
+token(){return localStorage.getItem(this.TOKEN_KEY)||""},
+session(){return this.post("company.getSession",{token:this.token()})},
+dashboard(){return this.post("company.getDashboard",{token:this.token()})},
+profile(){return this.post("company.getProfile",{token:this.token()})},
+updateProfile(data){return this.post("company.updateProfile",{token:this.token(),data})},
+jobs(){return this.post("company.getJobs",{token:this.token()})},
+createJob(data){return this.post("company.createJob",{token:this.token(),data})},
+async departments(forceRefresh=false){if(!forceRefresh){const c=this.getDepartmentCache();if(c)return c}const d=await this.post("company.getDepartments",{token:this.token()});this.setDepartmentCache(d);return d},
+setDepartmentCache(data){localStorage.setItem(this.DEPARTMENT_CACHE_KEY,JSON.stringify({expiresAt:Date.now()+this.DEPARTMENT_CACHE_MINUTES*60000,data}))},
+getDepartmentCache(){try{const r=localStorage.getItem(this.DEPARTMENT_CACHE_KEY);if(!r)return null;const c=JSON.parse(r);if(!c.expiresAt||c.expiresAt<=Date.now()){localStorage.removeItem(this.DEPARTMENT_CACHE_KEY);return null}return Array.isArray(c.data)?c.data:null}catch(e){localStorage.removeItem(this.DEPARTMENT_CACHE_KEY);return null}},
+async logout(){const t=this.token();localStorage.removeItem(this.TOKEN_KEY);localStorage.removeItem(this.DEPARTMENT_CACHE_KEY);try{await this.post("company.logout",{token:t})}catch(e){console.warn(e)}}
 });
